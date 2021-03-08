@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -40,6 +42,7 @@ dependencies { configuration ->
     lifecycle(configuration)
     retrofit(configuration)
     coroutines(configuration)
+    hilt(configuration)
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -84,4 +87,10 @@ private static void coroutines(configuration) {
     def coroutines_version = "1.4.2"
     configuration.implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     configuration.implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+}
+
+private static void hilt(configuration) {
+    def hilt_version = "2.33-beta"
+    configuration.implementation "com.google.dagger:hilt-android:$hilt_version"
+    configuration.kapt "com.google.dagger:hilt-compiler:$hilt_version"
 }
