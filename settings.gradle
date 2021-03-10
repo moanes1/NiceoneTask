@@ -1,2 +1,4 @@
+include ':datasource'
+include ':test'
 include ':app'
 rootProject.name = "NiceoneTask"
