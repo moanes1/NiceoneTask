@@ -30,23 +30,6 @@ data class Character(
     @SerializedName("portrayed")
     var portrayed: String,
     @SerializedName("status")
-    var status: String
-) {
-    val getLiveAge = flow {
-        while (true) {
-            val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH)
-            val from = sdf.parse(birthday)
-            val to = Calendar.getInstance().time
-
-            val diffInMillies = abs(to.time - from.time)
-
-            val seconds = diffInMillies / 1000
-            val minutes = seconds / 60
-            val hours = minutes / 60
-            val days = hours / 24
-            val months = days / 30
-            val years = months / 12
-            emit("$years years, ${months % 12} months, ${days % 30} days, ${hours % 24} hours, ${minutes % 60} minutes, ${seconds % 60} seconds")
-        }
-    }
-}
+    var status: String,
+    var liveAge: String
+)
