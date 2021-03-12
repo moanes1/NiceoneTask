@@ -46,8 +46,8 @@ dependencies { configuration ->
     api project(':datasource')
     androidX(configuration)
     lifecycle(configuration)
-//    retrofit(configuration)
-//    coroutines(configuration)
+    retrofit(configuration)
+    coroutines(configuration)
     hilt(configuration)
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -72,7 +72,7 @@ private static void androidX(configuration) {
 }
 
 private static void lifecycle(configuration) {
-    def lifecycle_version = "2.3.0"
+    def lifecycle_version = "2.2.0"
 
     configuration.implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     configuration.implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

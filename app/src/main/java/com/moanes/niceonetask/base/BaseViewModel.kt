@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 open class BaseViewModel : ViewModel(), CoroutineScope {
@@ -39,4 +36,23 @@ open class BaseViewModel : ViewModel(), CoroutineScope {
                 errorLiveData.postValue(exception.localizedMessage)
             }
         }
+
+    fun handelRequest(
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        launch {
+            try {
+                showLoading.postValue(true)
+
+                block()
+
+                showLoading.postValue(false)
+
+            } catch (exception: Exception) {
+                showLoading.postValue(false)
+                errorLiveData.postValue(exception.localizedMessage)
+
+            }
+        }
+    }
 }
