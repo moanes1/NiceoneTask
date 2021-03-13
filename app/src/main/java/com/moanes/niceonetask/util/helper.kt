@@ -13,7 +13,7 @@ fun calculateAge(birthDate: String): String {
     val matcher: Matcher = pattern.matcher(birthDate)
     if (matcher.matches()) {
         val from = sdf.parse(birthDate)
-        val to = Calendar.getInstance().time
+        val to = getCurrentTime()
 
         val diffInMillies = abs(to.time - from.time)
 
@@ -27,4 +27,10 @@ fun calculateAge(birthDate: String): String {
     } else {
         return "Unknown"
     }
+
+
+}
+
+fun getCurrentTime():Date{
+    return  Calendar.getInstance().time
 }
