@@ -1,15 +1,15 @@
 package com.moanes.niceonetask.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.moanes.niceonetask.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
 
         handleCharactersLiveData()
         viewModel.getCharacters()
+
+        viewModel.calculateCharactersAge()
     }
 
     private fun handleCharactersLiveData() {

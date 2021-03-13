@@ -49,6 +49,7 @@ dependencies { configuration ->
     retrofit(configuration)
     coroutines(configuration)
     hilt(configuration)
+    imageLoader(configuration)
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.fragment:fragment-ktx:1.3.0'
@@ -101,4 +102,8 @@ private static void hilt(configuration) {
     configuration.implementation "com.google.dagger:hilt-android:$hilt_version"
     configuration.implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
     configuration.kapt "com.google.dagger:hilt-compiler:$hilt_version"
+}
+
+private static void imageLoader(configuration) {
+    configuration.implementation 'com.squareup.picasso:picasso:2.71828'
 }
