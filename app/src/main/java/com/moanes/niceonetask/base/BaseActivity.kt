@@ -13,14 +13,12 @@ abstract class BaseActivity : AppCompatActivity() {
     @LayoutRes
     abstract fun getLayout(): Int
 
-    abstract fun init()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayout())
         progressDialog = ProgressDialog(this)
 
-        init()
     }
 
     open fun showLoading() {

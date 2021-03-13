@@ -2,11 +2,7 @@ package com.moanes.datasource.model
 
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.flow.flow
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.math.abs
+
 
 data class Character(
     @SerializedName("appearance")
@@ -31,5 +27,5 @@ data class Character(
     var portrayed: String,
     @SerializedName("status")
     var status: String,
-    var liveAge: String
+    var liveAge: String="Unknown"
 )

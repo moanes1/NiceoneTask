@@ -8,6 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -41,7 +43,7 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
     }
 
 
-    private fun loadNextPage() {
+     fun loadNextPage() {
         if (!isLastPage) {
             lastOffset += limit
             getCharacters()
@@ -63,20 +65,27 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
     }
 
     private fun calculateAge(character: Character) {
+        val pattern= Pattern.compile("^(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])-[0-9]{4}\$")
         val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH)
-        val from = sdf.parse(character.birthday)
-        val to = Calendar.getInstance().time
 
-        val diffInMillies = abs(to.time - from.time)
+        val matcher: Matcher = pattern.matcher(character.birthday)
+        if(matcher.matches()) {
+            val from = sdf.parse(character.birthday)
+            val to = Calendar.getInstance().time
 
-        val seconds = diffInMillies / 1000
-        val minutes = seconds / 60
-        val hours = minutes / 60
-        val days = hours / 24
-        val months = days / 30
-        val years = months / 12
-        character.liveAge =
-            "$years years, ${months % 12} months, ${days % 30} days, ${hours % 24} hours, ${minutes % 60} minutes, ${seconds % 60} seconds"
+            val diffInMillies = abs(to.time - from.time)
+
+            val seconds = diffInMillies / 1000
+            val minutes = seconds / 60
+            val hours = minutes / 60
+            val days = hours / 24
+            val months = days / 30
+            val years = months / 12
+            character.liveAge =
+                "$years years, ${months % 12} months, ${days % 30} days, ${hours % 24} hours, ${minutes % 60} minutes, ${seconds % 60} seconds"
+        }else{
+            character.liveAge ="Unknown"
+        }
         charactersLiveData.value = charactersLiveData.value
     }
 

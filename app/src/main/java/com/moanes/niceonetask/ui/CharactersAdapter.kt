@@ -42,7 +42,13 @@ class CharactersAdapter :
         }
 
         override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
-            return oldItem == newItem
+            if (oldItem.liveAge.isNullOrBlank() || newItem.liveAge.isNullOrBlank() || newItem.liveAge.equals(
+                    "Unknown"
+                )
+            )
+                return true
+
+            return false
         }
     }
 }
