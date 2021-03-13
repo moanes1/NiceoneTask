@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.moanes.datasource.model.Character
 import com.moanes.datasource.repositories.CharactersRepo
 import com.moanes.niceonetask.base.BaseViewModel
+import com.moanes.niceonetask.util.calculateAge
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -25,7 +26,7 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
     var timeJob: Job? = null
 
     init {
-        charactersLiveData.value=ArrayList<Character>()
+        charactersLiveData.value = ArrayList<Character>()
     }
 
     fun getCharacters() = handelRequest {
@@ -43,7 +44,7 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
     }
 
 
-     fun loadNextPage() {
+    fun loadNextPage() {
         if (!isLastPage) {
             lastOffset += limit
             getCharacters()
@@ -55,7 +56,8 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
             while (true) {
                 charactersLiveData.value?.let {
                     for (character in it.iterator()) {
-                        calculateAge(character)
+                        character.liveAge = calculateAge(character.birthday)
+                        charactersLiveData.value = charactersLiveData.value
                     }
                 }
 
@@ -64,34 +66,9 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
         }
     }
 
-    private fun calculateAge(character: Character) {
-        val pattern= Pattern.compile("^(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])-[0-9]{4}\$")
-        val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH)
-
-        val matcher: Matcher = pattern.matcher(character.birthday)
-        if(matcher.matches()) {
-            val from = sdf.parse(character.birthday)
-            val to = Calendar.getInstance().time
-
-            val diffInMillies = abs(to.time - from.time)
-
-            val seconds = diffInMillies / 1000
-            val minutes = seconds / 60
-            val hours = minutes / 60
-            val days = hours / 24
-            val months = days / 30
-            val years = months / 12
-            character.liveAge =
-                "$years years, ${months % 12} months, ${days % 30} days, ${hours % 24} hours, ${minutes % 60} minutes, ${seconds % 60} seconds"
-        }else{
-            character.liveAge ="Unknown"
-        }
-        charactersLiveData.value = charactersLiveData.value
-    }
-
     override fun onCleared() {
         super.onCleared()
         timeJob?.cancel()
-        timeJob=null
+        timeJob = null
     }
 }
