@@ -1,6 +1,7 @@
 package com.moanes.datasource.model
 
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.annotations.SerializedName
 
 
@@ -13,5 +14,5 @@ data class Character(
     var img: String="",
     @SerializedName("name")
     var name: String,
-    var liveAge: String="Unknown"
+    var liveAge:MutableLiveData<String> = MutableLiveData<String>()
 )

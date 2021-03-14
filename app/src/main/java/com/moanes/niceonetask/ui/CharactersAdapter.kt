@@ -1,8 +1,10 @@
 package com.moanes.niceonetask.ui
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +16,9 @@ import com.squareup.picasso.Picasso
 
 class CharactersAdapter :
     ListAdapter<Character, CharactersAdapter.ViewHolder>(CharacterItemDiffCallback()) {
-
+    private lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        context=parent.context
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.character_item, parent, false)
         )
@@ -25,7 +28,12 @@ class CharactersAdapter :
         val character = getItem(position)
 
         holder.name.text = character.name
-        holder.age.text = character.liveAge
+//        holder.age.text = character.liveAge
+        character.liveAge?.let {
+            character.liveAge.observe(context as AppCompatActivity, {
+                holder.age.text = it
+            })
+        }
 
         Picasso.get().load(character.img).into(holder.image)
     }
@@ -42,13 +50,7 @@ class CharactersAdapter :
         }
 
         override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
-            if (oldItem.liveAge.isNullOrBlank() || newItem.liveAge.isNullOrBlank() || newItem.liveAge.equals(
-                    "Unknown"
-                )
-            )
-                return true
-
-            return false
+            return oldItem.equals(newItem)
         }
     }
 }

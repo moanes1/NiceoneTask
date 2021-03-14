@@ -1,12 +1,9 @@
 package com.moanes.niceonetask.util
 
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.mockkStatic
-import io.mockk.verify
 import org.junit.Assert
 import org.junit.Test
-import java.text.SimpleDateFormat
 import java.util.*
 
 class HelperKtTest {

@@ -7,13 +7,7 @@ import com.moanes.niceonetask.base.BaseViewModel
 import com.moanes.niceonetask.util.calculateAge
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import kotlin.math.abs
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val charactersRepo: CharactersRepo) :
@@ -37,7 +31,9 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
         if (lastOffset == 0)
             showNoData.postValue(result.isEmpty())
 
-        result.let { charactersLiveData.value?.addAll(it) }
+        result.let {
+            initLiveAgeLiveData(it)
+            charactersLiveData.value?.addAll(it) }
 
         charactersLiveData.value = charactersLiveData.value
 
@@ -51,12 +47,20 @@ class MainViewModel @Inject constructor(private val charactersRepo: CharactersRe
         }
     }
 
+    private fun initLiveAgeLiveData(list: List<Character>){
+        for(item in list){
+            item.liveAge= MutableLiveData<String>()
+        }
+    }
+
     fun calculateCharactersAge() {
         timeJob = launch {
             while (true) {
                 charactersLiveData.value?.let {
                     for (character in it.iterator()) {
-                        character.liveAge = calculateAge(character.birthday)
+                        if(character.liveAge==null)
+                            character.liveAge=MutableLiveData<String>()
+                        character.liveAge.value = calculateAge(character.birthday)
                         charactersLiveData.value = charactersLiveData.value
                     }
                 }
